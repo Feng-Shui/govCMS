@@ -7,6 +7,57 @@
 define('GOVCMS_CONSULTATION_LATE_SUBMISSION_SALT', variable_get('govcms_consultation_late_hash'));
 
 /**
+ * Implements hook_token_info().
+ */
+function govcms_consultation_token_info() {
+  $type = array(
+    'name'        => t('govCMS Consultation'),
+    'description' => t('Tokens related to govCMS Consultation.'),
+  );
+
+  $node['consultation_nid'] = array(
+    'name'        => t('Consultation node ID'),
+    'description' => t('The unique ID of the consultation node.'),
+  );
+
+  return array(
+    'types'  => array('govcms_consultation' => $type),
+    'tokens' => array('govcms_consultation' => $node),
+  );
+}
+
+/**
+ * Implements hook_tokens().
+ */
+function govcms_consultation_tokens($type, $tokens, $data = array(), $options = array()) {
+
+  $replacements = array();
+
+  if ($type == 'govcms_consultation') {
+
+    // Currently, the only token we're setting is only available when we're on
+    // a consultation node path.  So we bail if that's not the case.  If more
+    // tokens are added in the future, this check should be removed.
+    $node = menu_get_object();
+    if (!empty($node->type) && $node->type != 'consultation') {
+      return $replacements;
+    }
+
+    // Process token replacements
+    foreach ($tokens as $name => $original) {
+      switch ($name) {
+        case 'consultation_nid':
+          $replacements[$original] = $node->nid;
+          break;
+      }
+    }
+
+  }
+
+  return $replacements;
+}
+
+/**
  * Implements hook_menu().
  */
 function govcms_consultation_menu() {
