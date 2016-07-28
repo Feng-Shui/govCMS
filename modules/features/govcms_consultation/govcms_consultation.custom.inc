@@ -7,6 +7,24 @@
 define('GOVCMS_CONSULTATION_LATE_SUBMISSION_SALT', variable_get('govcms_consultation_late_hash'));
 
 /**
+ * Implements hook_node_view().
+ */
+function govcms_consultation_node_view($node, $view_mode, $langcode) {
+
+  // Prevent the submission webform being viewed directly on its node path
+  if (
+    $view_mode == 'full'
+    && !empty($node->uuid)
+    && $node->uuid == '1bc43c5f-fc01-4ac4-bcc8-2b50660f3ae0'
+    && node_is_page($node)
+  ) {
+    drupal_not_found();
+    drupal_exit();
+  }
+
+}
+
+/**
  * Implements hook_menu().
  */
 function govcms_consultation_menu() {
