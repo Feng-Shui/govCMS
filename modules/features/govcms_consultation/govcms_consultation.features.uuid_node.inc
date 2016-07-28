@@ -957,10 +957,10 @@ Submitted values are:
         'form_key' => 'hys_parent_consultation_id',
         'name' => 'Parent consultation id',
         'type' => 'hidden',
-        'value' => '[current-page:url:unaliased:args:value:1]',
+        'value' => '[govcms_consultation:consultation_nid]',
         'extra' => array(
-          'hidden_type' => 'hidden',
           'private' => 0,
+          'hidden_type' => 'value',
           'analysis' => FALSE,
         ),
         'required' => 0,
